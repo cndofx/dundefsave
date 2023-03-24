@@ -1,3 +1,6 @@
+use dundefsave::crc;
+
 fn main() {
-    println!("Hello, world!");
+    let table = crc::table::CRCLookupTable::new();
+    println!("{:02X?}", table);
 }

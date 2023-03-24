@@ -1,3 +1,4 @@
+pub mod crc;
 mod models;
 
 pub const MAX_DAMAGE_REDUCTIONS: usize = 4;
