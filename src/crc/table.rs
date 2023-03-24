@@ -1,8 +1,10 @@
+use std::ops::Index;
+
 const POLYNOMIAL: u32 = 0x04C11DB7;
 
 #[derive(Debug)]
 pub struct CRCLookupTable {
-    data: [u8; 1024],
+    data: [u32; 256],
 }
 
 impl CRCLookupTable {
@@ -23,12 +25,14 @@ impl CRCLookupTable {
             data[dividend as usize] = remainder;
         }
 
-        // convert u32 values to u8
-        let mut new_data = [0; 1024];
-        for i in 0..256 {
-            new_data[4*i..][..4].copy_from_slice(&data[i].to_le_bytes());
-        }
+        CRCLookupTable { data }
+    }
+}
 
-        CRCLookupTable { data: new_data }
+impl Index<usize> for CRCLookupTable {
+    type Output = u32;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.data[index]
     }
 }
