@@ -1,20 +1,35 @@
-use std::io::Read;
+use std::{
+    io::{Read, Write},
+    path::Path,
+};
 
+use clap::Parser;
 use deku::DekuContainerRead;
 use dundefsave::{crc, parser::CompressedSave};
 
-fn main() {
-    let table = crc::table::CRCLookupTable::new();
-    println!("{:08X?}", table);
+mod cli;
 
-    let data = std::fs::read("savedata/DunDefHeroes.dun").unwrap();
-    let (_, save) = CompressedSave::from_bytes((&data, 0)).unwrap();
-    println!("{:X?}", save);
+fn main() -> eyre::Result<()> {
+    let args = cli::Cli::parse();
 
-    let mut decompressed = Vec::with_capacity(save.decompressed_size as usize);
-    compress::zlib::Decoder::new(&*save.data)
-        .read_to_end(&mut decompressed)
-        .unwrap();
+    match &args.command {
+        cli::Commands::Compress(args) => compress(&args.input, &args.output)?,
+        cli::Commands::Decompress(args) => decompress(&args.input, &args.output)?,
+    }
 
-    println!("{:X?}", decompressed);
+    Ok(())
+}
+
+fn compress(input: &Path, output: &Path) -> eyre::Result<()> {
+    todo!()
+}
+
+fn decompress(input: &Path, output: &Path) -> eyre::Result<()> {
+    let data = std::fs::read(input)?;
+    let (_, compressed_save) = CompressedSave::from_bytes((&data, 0))?;
+    let mut decompressed = Vec::with_capacity(compressed_save.decompressed_size as usize);
+    compress::zlib::Decoder::new(&*compressed_save.data).read_to_end(&mut decompressed)?;
+    let mut file = std::fs::File::create(output)?;
+    file.write_all(&decompressed)?;
+    Ok(())
 }
