@@ -4,6 +4,7 @@ use std::{
 };
 
 use clap::Parser;
+use compress::zlib;
 use dundefsave::{crc, parser::CompressedSave};
 
 mod cli;
@@ -26,9 +27,11 @@ fn compress(input: &Path, output: &Path) -> eyre::Result<()> {
 fn decompress(input: &Path, output: &Path) -> eyre::Result<()> {
     let data = std::fs::read(input)?;
     let compressed_save = CompressedSave::from_bytes(data);
-    // let mut decompressed = Vec::with_capacity(compressed_save.decompressed_size as usize);
-    // compress::zlib::Decoder::new(&*compressed_save.data).read_to_end(&mut decompressed)?;
-    // let mut file = std::fs::File::create(output)?;
-    // file.write_all(&decompressed)?;
+    let mut decompressed = Vec::with_capacity(compressed_save.whole_decompressed_size as usize);
+    for block in compressed_save.data.iter() {
+        zlib::Decoder::new(&block[..]).read_to_end(&mut decompressed)?;
+    }
+    let mut file = std::fs::File::create(output)?;
+    file.write_all(&decompressed)?;
     Ok(())
 }
