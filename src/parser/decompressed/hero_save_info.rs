@@ -1,5 +1,6 @@
-use crate::models::LinearColor;
+use super::LinearColor;
 
+#[derive(Debug)]
 pub struct HeroSaveInfo {
     is_initialized: bool,
 

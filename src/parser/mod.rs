@@ -5,6 +5,8 @@ use byteorder::ReadBytesExt;
 
 use byteorder::LittleEndian;
 
+pub mod decompressed;
+
 pub struct CompressedSave {
     pub unk_version1: u32,
     pub unk_version2: u32,
@@ -25,24 +27,24 @@ pub struct BlockInfo {
 }
 
 impl CompressedSave {
-    pub fn from_bytes(bytes: Vec<u8>) -> Self {
-        let mut rdr = Cursor::new(bytes);
-
-        let unk_version1 = rdr.read_u32::<LittleEndian>().unwrap();
-        let unk_version2 = rdr.read_u32::<LittleEndian>().unwrap();
-        let decompressed_size = rdr.read_u32::<LittleEndian>().unwrap();
-        let size = rdr.read_u32::<LittleEndian>().unwrap();
-        let crc = rdr.read_u32::<LittleEndian>().unwrap();
-        let magic = rdr.read_u32::<LittleEndian>().unwrap();
-        let block_size = rdr.read_u32::<LittleEndian>().unwrap();
-        let whole_compressed_size = rdr.read_u32::<LittleEndian>().unwrap();
-        let whole_decompressed_size = rdr.read_u32::<LittleEndian>().unwrap();
+    // pub fn from_bytes(bytes: Vec<u8>) -> Self {
+    // let mut rdr = Cursor::new(bytes);
+    pub fn read<R: Read>(reader: &mut R) -> std::io::Result<Self> {
+        let unk_version1 = reader.read_u32::<LittleEndian>()?;
+        let unk_version2 = reader.read_u32::<LittleEndian>()?;
+        let decompressed_size = reader.read_u32::<LittleEndian>()?;
+        let size = reader.read_u32::<LittleEndian>()?;
+        let crc = reader.read_u32::<LittleEndian>()?;
+        let magic = reader.read_u32::<LittleEndian>()?;
+        let block_size = reader.read_u32::<LittleEndian>()?;
+        let whole_compressed_size = reader.read_u32::<LittleEndian>()?;
+        let whole_decompressed_size = reader.read_u32::<LittleEndian>()?;
 
         let mut block_info = Vec::new();
         let mut total_size = 0;
         while total_size < whole_compressed_size {
-            let compressed_size = rdr.read_u32::<LittleEndian>().unwrap();
-            let block_size = rdr.read_u32::<LittleEndian>().unwrap();
+            let compressed_size = reader.read_u32::<LittleEndian>()?;
+            let block_size = reader.read_u32::<LittleEndian>()?;
             block_info.push(BlockInfo {
                 compressed_size,
                 block_size,
@@ -53,11 +55,11 @@ impl CompressedSave {
         let mut data = Vec::new();
         for block in block_info.iter() {
             let mut block_data = vec![0; block.compressed_size as usize];
-            rdr.read_exact(&mut block_data).unwrap();
+            reader.read_exact(&mut block_data)?;
             data.push(block_data);
         }
 
-        Self {
+        let save = Self {
             unk_version1,
             unk_version2,
             decompressed_size,
@@ -69,7 +71,9 @@ impl CompressedSave {
             whole_decompressed_size,
             block_info,
             data,
-        }
+        };
+
+        Ok(save)
     }
 }
 

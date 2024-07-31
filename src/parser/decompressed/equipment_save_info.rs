@@ -1,14 +1,15 @@
 use crate::{MAX_DAMAGE_REDUCTIONS, MAX_LEVELUP_STATS};
 
-use crate::models::LinearColor;
+use super::LinearColor;
 
+#[derive(Debug)]
 pub struct EquipmentSaveInfo {
     is_initialized: bool,
 
     // maybe handle this in a more rusty way
     damage_reduction_index: [u8; MAX_DAMAGE_REDUCTIONS],
     damage_reduction_percentage: [u8; MAX_DAMAGE_REDUCTIONS],
-    
+
     stat_modifiers: [i32; MAX_LEVELUP_STATS],
 
     weapon_damage_bonus: i32,
@@ -21,7 +22,7 @@ pub struct EquipmentSaveInfo {
 
     level: i32,
     stored_mana: i32,
-    
+
     weapon_blocking_bonus: u8,
     weapon_alt_damage_bonus: i32,
     weapon_clip_ammo_bonus: i32,
@@ -29,20 +30,20 @@ pub struct EquipmentSaveInfo {
     weapon_knockback_bonus: u8,
     weapon_charge_speed_bonus: u8,
     weapon_shots_per_second_bonus: u8,
-    
+
     name_index_base: u8,
     name_index_damage_reduction: u8,
     name_index_quality_descriptor: u8,
-    
+
     primary_color_set: u8,
     secondary_color_set: u8,
-    
+
     equipment_id1: i32,
     equipment_id2: i32,
-    
+
     minimum_sell_value: i32,
     maximum_sell_value: i32,
-    max_level: i32, 
+    max_level: i32,
 
     dropped_location_x: i32,
     dropped_location_y: i32,

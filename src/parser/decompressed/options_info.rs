@@ -1,5 +1,10 @@
+use std::io::Read;
+
+use byteorder::{LittleEndian, ReadBytesExt};
+
 use crate::MAX_TUTORIAL_SETS;
 
+#[derive(Debug)]
 pub struct OptionsInfo {
     fixed_size_options: OptionsFixedSize,
     resolution: String,
@@ -14,6 +19,7 @@ pub struct OptionsInfo {
     installed_dlc_equipments: Vec<i32>,
 }
 
+#[derive(Debug)]
 pub struct OptionsFixedSize {
     auto_show_levelup: bool,
     allow_friendly_fire: bool,
@@ -47,7 +53,7 @@ pub struct OptionsFixedSize {
     current_difficulty: u8,
     lobby_item_lock: bool,
     default_chase_camera: bool,
-    default_camera_target_distance: f32, 
+    default_camera_target_distance: f32,
     default_placing_tower_camera_distance: f32,
     mouse_camera_rotation_speed: f32,
 
@@ -62,6 +68,7 @@ pub struct OptionsFixedSize {
     hero_unlocks: Vec<i32>,
 }
 
+#[derive(Debug)]
 pub struct SearchFilterSettings {
     level_indices_to_filter: Vec<i32>,
     difficulties_to_filter: Vec<i32>,
@@ -75,4 +82,20 @@ pub struct SearchFilterSettings {
     filter_host_level: u8,
     filter_host_level_start: u8,
     filter_host_level_end: u8,
+}
+
+impl OptionsInfo {
+    pub fn read<R: Read>(reader: &mut R) -> std::io::Result<Self> {
+        let fixed_size_options = OptionsFixedSize::read(reader)?;
+
+        todo!()
+    }
+}
+
+impl OptionsFixedSize {
+    pub fn read<R: Read>(reader: &mut R) -> std::io::Result<Self> {
+        let flags = reader.read_u32::<LittleEndian>()?;
+
+        todo!()
+    }
 }

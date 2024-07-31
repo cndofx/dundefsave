@@ -16,6 +16,10 @@ pub enum Commands {
     Compress(CompressArgs),
     #[command(about = "Decompress a save file")]
     Decompress(CompressArgs),
+    #[command(about = "Parse a compressed save file")]
+    ParseCompressed(ParseArgs),
+    #[command(about = "Parse a decompressed save file")]
+    ParseDecompressed(ParseArgs),
 }
 
 #[derive(Args)]
@@ -24,4 +28,10 @@ pub struct CompressArgs {
     pub input: PathBuf,
     #[arg(help = "Output filename")]
     pub output: PathBuf,
+}
+
+#[derive(Args)]
+pub struct ParseArgs {
+    #[arg(help = "Input filename")]
+    pub input: PathBuf,
 }

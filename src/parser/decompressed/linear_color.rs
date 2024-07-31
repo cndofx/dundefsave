@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub struct LinearColor {
     r: f32,
     g: f32,
