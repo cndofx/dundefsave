@@ -1,0 +1,273 @@
+//------------------------------------------------
+//--- 010 Editor v14.0.1 Binary Template
+//
+//      File: 
+//   Authors: cndofx
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+typedef struct {
+    uint32 length;
+    if ( length > 0 ) {
+        char value[length];   
+    }
+} FString <read=ReadFString>;
+
+string ReadFString( FString &s ) {
+    if ( s.length > 0 ) {
+        return s.value;
+    } else {
+        return "";
+    }
+}
+
+typedef struct {
+    float r;
+    float g;
+    float b;
+    float a;
+} LinearColor;
+
+typedef struct {
+    byte flags1[5];
+    int shownTutorials[0xA];
+    //byte unk1;
+    float volumeSFX;
+    float volumeMusic;
+    float volumeVoicePlay;
+    float volumeVoiceCapture;
+    byte flags2[3];
+    float gamma;
+    float saturation;
+    float uiScale;
+    byte flags3[6];
+    byte splitScreenConfig;
+    byte currentDifficulty;
+    byte flags4[2];
+    float defaultCameraTargetDistance;
+    float defaultPlacingTowerCameraDistance;
+    float mouseCameraRotationSpeed;
+    uint32 itemQualityFilter;
+    byte hideAccessory;
+    byte enableOutlineEffect;
+    byte graphicsQuality;
+    float frameRateLimit;
+    byte inventorySortingFilter;
+    uint32 minimumLevel;
+    byte savedLoginInfo;
+    uint32 customGameMetaFlagsLength;
+    if ( customGameMetaFlagsLength > 0 ) {
+        byte customGameMetaFlags[customGameMetaFlagsLength];
+    }
+    uint32 costumeUnlocksLength;
+    if ( costumeUnlocksLength > 0 ) {
+        uint32 costumeUnlocks[costumeUnlocksLength];
+    }
+    uint32 heroUnlocksLength;
+    if ( heroUnlocksLength > 0 ) {
+        uint32 heroUnlocks[heroUnlocksLength];
+    }
+} FixedSizeOptions;
+
+//typedef struct {
+//    byte unk[0x948];
+//} FixedSizeOptionsUnk;
+
+typedef struct {
+    uint32 length1;
+    if ( length1 > 0 ) {
+        int32 levelIndicesToFilter[length1];
+    }
+    uint32 length2;
+    if ( length2 > 0 ) {
+        int32 difficultiesToFilter[length2];
+    }
+    byte filterChallengeMissions;
+    byte filterCampaignMissions;
+    byte filterPureStrategy;
+    byte filterInfiniteBuild;
+    byte filterInfiniteWaves;
+    byte filterHostClass;
+    byte filterHostLevel;
+    byte filterHostLevelStart;
+    byte filterHostLevelEnd;
+} SearchFilterSettings;
+
+typedef struct {
+    //FixedSizeOptionsUnk fixedSizeOptions;
+    FixedSizeOptions fixedSizeOptions;
+    FString resolution;
+    FString lastLevelTag;
+    FString username;
+    FString password;
+    SearchFilterSettings searchFilterSettings;
+    uint32 installedDlcEquipmentsLength;
+    if ( installedDlcEquipmentsLength > 0 ) {
+        uint32 installedDlcEquipments[installedDlcEquipmentsLength];
+    }
+} Options;
+
+typedef struct {
+    byte initialized;
+    uint32 heroHealthModifier;
+    uint32 heroSpeedModifier;
+    uint32 heroDamageModifier;
+    uint32 heroCastingModifier;
+    uint32 abilityOneModifier;
+    uint32 abilityTwoModifier;
+    uint32 defenseHealthModifier;
+    uint32 defenseRateModifier;
+    uint32 defenseDamageModifier;
+    uint32 defenseAreaModifier;
+    uint32 level;
+    uint32 experience;
+    uint32 mana_power;
+    GUID guid;
+    uint32 costumeIndex;
+    LinearColor color1;
+    LinearColor color2;
+    LinearColor color3;
+    byte didRespec;
+    byte gaveExpBonus;
+    byte allowRename;
+    FString name;
+    FString template;
+    FString hotkeyOne;
+    FString hotkeyTwo;
+    FString hotkeyThree;
+    FString hotkeyFour;
+    FString hotkeyFive;
+    FString hotkeySix;
+    FString hotkeySeven;
+    FString hotkeyEight;
+    FString hotkeyNine;
+    FString hotkeyTen;
+    uint32 equipmentCount;
+} Hero <read=ReadHero>;
+
+string ReadHero( Hero &hero ) {
+    return hero.name.value;
+}
+
+typedef struct {
+    byte initialized;
+    byte damageReductionIndex[4];
+    byte damageReductionPercent[4];
+    int32 statModifiers[0xB];
+    int32 spawnStatModifiers[0xB];
+    int32 weaponDamageBonus;
+    byte weaponProjectilesBonus;
+    int32 weaponProjectileSpeedBonus;
+    byte additionalDamageTypeIndex;
+    int32 additionalDamageAmount;
+    float drawScaleMultiplier;
+    float swingSpeedMultiplier;
+    int32 level;
+    int32 storedMana;
+    float spawnQuality;
+    float spawnRandomizerMultiplier;
+    byte weaponBlockingBonus;
+    int32 weaponAltDamageBonus;
+    int32 weaponClipAmmoBonus;
+    byte weaponReloadSpeedBonus;
+    byte weaponKnockbackBonus;
+    byte weaponChargeSpeedBonus;
+    byte weaponShotsPerSecondBonus;
+    byte nameIndexBase;
+    byte nameIndexDR;
+    byte nameIndexQuality;
+    byte primaryColorSet;
+    byte secondaryColorSet;
+    int32 id1;
+    int32 id2;
+    int32 minimumValue;
+    int32 maximumValue;
+    int32 maximumLevel;
+    int32 droppedLocationX;
+    int32 droppedLocationY;
+    int32 droppedLocationZ;
+    byte canBeUpgraded;
+    byte allowRenamingAtMaxUpgrade;
+    byte cantBeDropped;
+    byte cantBeSold;
+    byte autoLockInItemBox;
+    byte didOneTimeEffect;
+    byte isLocked;
+    byte manualLR;
+    LinearColor primaryColorOverride;
+    LinearColor secondaryColorOverride;
+    FString userEquipmentName;
+    FString userForgerName;
+    FString description;
+    FString equipmentTemplate;
+    FString equipmentTimestamp;
+    int folderID;
+    byte isSecondary;
+    int32 statEquipmentIDs[3];
+    int32 statEquipmentTiers[3];
+    LinearColor qualityBeamColorOverride;
+} Equipment <read=ReadEquipment>;
+
+string ReadEquipment( Equipment &equipment ) {
+    return equipment.equipmentTemplate.value;
+}
+
+typedef struct {
+    Hero hero <bgcolor=cGreen>;
+    uint32 equipCount <bgcolor=cYellow>;
+    if ( equipCount > 0 ) {
+        Equipment equip[equipCount] <optimize=false, bgcolor=cAqua>;
+    }
+} HeroAndEquipment <read=ReadHeroAndEquipment>;
+
+string ReadHeroAndEquipment( HeroAndEquipment &hero ) {
+    return hero.hero.name.value;
+}
+
+typedef struct {
+    byte achievements[0x1F4];    
+} Achievements;
+
+typedef struct {
+    byte coreUnlocks[0x28];
+} CoreUnlocks;
+
+typedef struct {
+    int32 coreIndex;
+    LinearColor color1;
+    LinearColor color2;
+    LinearColor color3;   
+} CoreOptions;
+
+typedef struct {
+    FString campaignTag;
+    int32 difficultyMask;
+} LevelProgress;
+
+typedef struct {
+    int32 storedMana;
+    int32 highInfoStoredMana[3];
+} ItemBoxInfo;
+
+uint64 unk;
+Options options;
+
+//FSeek(0x9A0);
+
+uint32 numHeroes <bgcolor=cRed>;
+HeroAndEquipment hero[numHeroes] <optimize=false>;
+Achievements achievements;
+CoreUnlocks coreUnlocks;
+CoreOptions coreOptions;
+int32 numBeatenLevels;
+LevelProgress beatenLevels[numBeatenLevels] <optimize=false>;
+int32 numUnlockedLevels;
+LevelProgress unlockedLevels[numUnlockedLevels] <optimize=false>;
+ItemBoxInfo itemBoxInfo;
+int32 numEquipment;
+Equipment equip[numEquipment] <optimize=false>;
