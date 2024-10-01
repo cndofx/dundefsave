@@ -6,6 +6,9 @@ pub mod options_info;
 
 use std::io::Read;
 
+use byteorder::ReadBytesExt;
+
+use byteorder::LittleEndian;
 use equipment_save_info::EquipmentSaveInfo;
 use hero_and_equipment::HeroAndEquipment;
 use hero_save_info::HeroSaveInfo;
@@ -21,6 +24,19 @@ pub struct GameStorage {
 impl GameStorage {
     pub fn read<R: Read>(reader: &mut R) -> std::io::Result<Self> {
         let game_options = OptionsInfo::read(reader)?;
-        todo!()
+
+        todo!();
+
+        // let heroes_length = reader.read_u32::<LittleEndian>()?;
+        // let mut heroes = Vec::new();
+        // for _ in 0..heroes_length {
+        //     heroes.push(HeroAndEquipment::read(reader)?);
+        // }
+
+        // let game_storage = GameStorage {
+        //     game_options,
+        //     heroes,
+        // };
+        // Ok(game_storage)
     }
 }

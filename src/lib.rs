@@ -1,4 +1,5 @@
 pub mod crc;
+pub mod my_bytes_ext;
 pub mod parser;
 
 pub const MAX_DAMAGE_REDUCTIONS: usize = 4;

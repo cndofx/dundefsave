@@ -1,4 +1,3 @@
-use std::io::Cursor;
 use std::io::Read;
 
 use byteorder::ReadBytesExt;
@@ -27,8 +26,6 @@ pub struct BlockInfo {
 }
 
 impl CompressedSave {
-    // pub fn from_bytes(bytes: Vec<u8>) -> Self {
-    // let mut rdr = Cursor::new(bytes);
     pub fn read<R: Read>(reader: &mut R) -> std::io::Result<Self> {
         let unk_version1 = reader.read_u32::<LittleEndian>()?;
         let unk_version2 = reader.read_u32::<LittleEndian>()?;
