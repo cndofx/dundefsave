@@ -179,23 +179,9 @@ impl OptionsFixedSize {
 
         let saved_login_info = reader.read_u8()? != 0;
 
-        let mut custom_game_meta_flags = Vec::new();
-        let custom_game_meta_flags_length = reader.read_u32::<LittleEndian>()?;
-        for _ in 0..custom_game_meta_flags_length {
-            custom_game_meta_flags.push(reader.read_u8()?);
-        }
-
-        let mut costume_unlocks = Vec::new();
-        let costume_unlocks_length = reader.read_u32::<LittleEndian>()?;
-        for _ in 0..costume_unlocks_length {
-            costume_unlocks.push(reader.read_i32::<LittleEndian>()?);
-        }
-
-        let mut hero_unlocks = Vec::new();
-        let hero_unlocks_length = reader.read_u32::<LittleEndian>()?;
-        for _ in 0..hero_unlocks_length {
-            hero_unlocks.push(reader.read_i32::<LittleEndian>()?);
-        }
+        let custom_game_meta_flags = reader.read_tarray(|reader| reader.read_u8())?;
+        let costume_unlocks = reader.read_tarray(|reader| reader.read_i32::<LittleEndian>())?;
+        let hero_unlocks = reader.read_tarray(|reader| reader.read_i32::<LittleEndian>())?;
 
         let options_fixed_size = OptionsFixedSize {
             unk,
@@ -248,17 +234,11 @@ impl OptionsFixedSize {
 
 impl SearchFilterSettings {
     pub fn read<R: Read>(reader: &mut R) -> std::io::Result<Self> {
-        let level_indices_to_filter_length = reader.read_u32::<LittleEndian>()?;
-        let mut level_indices_to_filter = Vec::new();
-        for _ in 0..level_indices_to_filter_length {
-            level_indices_to_filter.push(reader.read_i32::<LittleEndian>()?);
-        }
+        let level_indices_to_filter =
+            reader.read_tarray(|reader| reader.read_i32::<LittleEndian>())?;
 
-        let difficulties_to_filter_length = reader.read_u32::<LittleEndian>()?;
-        let mut difficulties_to_filter = Vec::new();
-        for _ in 0..difficulties_to_filter_length {
-            difficulties_to_filter.push(reader.read_i32::<LittleEndian>()?);
-        }
+        let difficulties_to_filter =
+            reader.read_tarray(|reader| reader.read_i32::<LittleEndian>())?;
 
         let filter_challenge_missions = reader.read_u8()?;
         let filter_campaign_missions = reader.read_u8()?;
